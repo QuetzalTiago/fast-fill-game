@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { io } from "socket.io-client";
 
-const SERVER_URL = process.env.SERVER_URL || "http://localhost:3001";
+const SERVER_URL =
+  process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3001";
 
 const useSocketBoard = () => {
   const [board, setBoard] = useState<string[][]>([]);
