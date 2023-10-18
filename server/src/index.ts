@@ -14,7 +14,6 @@ const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
     credentials: true,
   },
 });
@@ -37,6 +36,8 @@ const initialGameState: GameState = {
 
 let gameState = initialGameState;
 
+const lastInteractionTime = new Map<string, number>();
+
 let timerInterval: NodeJS.Timeout;
 
 const startGameInterval = () => {
@@ -46,8 +47,23 @@ const startGameInterval = () => {
   }, 1000);
 };
 
+const maxIdleTime = 5 * 60 * 1000; // 5 minutes
+
+// Check for idle players
+setInterval(() => {
+  const now = Date.now();
+  for (const [socketId, lastTime] of lastInteractionTime) {
+    if (now - lastTime > maxIdleTime) {
+      const socket = io.sockets.sockets.get(socketId);
+      if (socket) {
+        socket.disconnect(true);
+      }
+      lastInteractionTime.delete(socketId);
+    }
+  }
+}, 60 * 1000);
+
 io.on("connection", (socket) => {
-  console.log("A player joined the game");
   socket.emit("currentBoard", gameState.board);
 
   if (gameState.players.size < 2) {
@@ -70,6 +86,7 @@ io.on("connection", (socket) => {
   }
 
   socket.on("squareClicked", (row: number, col: number) => {
+    lastInteractionTime.set(socket.id, Date.now());
     const playerColor = gameState.players.get(socket.id);
     if (gameState.board[row][col] === "" && playerColor) {
       gameState.board[row][col] = playerColor;
@@ -85,6 +102,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("resetGame", () => {
+    lastInteractionTime.set(socket.id, Date.now());
     if (gameState.players.has(socket.id)) {
       gameState = resetGameState(gameState);
 
@@ -98,8 +116,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected");
-
     const disconnectedPlayerColor = gameState.players.get(socket.id);
 
     if (disconnectedPlayerColor) {
@@ -120,8 +136,6 @@ io.on("connection", (socket) => {
       gameState = resetGameState(gameState);
     }
   });
-
-  console.log(gameState);
 });
 
 server.listen(3001, () => {

@@ -14,7 +14,7 @@ import useSocketBoard from "./Hooks/useSocketBoard";
 interface Props {}
 
 const Game: React.FC<Props> = () => {
-  const { board, gameResult, timer, color, resetGame, updateBoard } =
+  const { board, gameResult, timer, playerColor, resetGame, updateBoard } =
     useSocketBoard();
 
   return (
@@ -27,13 +27,13 @@ const Game: React.FC<Props> = () => {
             onUpdateBoard={updateBoard}
           />
           <Timer elapsedTime={timer} />
-          <Score board={board} userColor={color} />
+          <Score board={board} playerColor={playerColor} />
           {gameResult && (
             <div className="mt-4 text-xl font-bold">
-              {gameResult === color && (
+              {gameResult === playerColor && (
                 <span className="text-green-500">You win!</span>
               )}
-              {gameResult !== color && gameResult !== "draw" && (
+              {gameResult !== playerColor && gameResult !== "draw" && (
                 <>
                   {gameResult === "red" && (
                     <span className="text-red-500">Red </span>
@@ -49,7 +49,7 @@ const Game: React.FC<Props> = () => {
               )}
             </div>
           )}
-          {gameResult && color && (
+          {gameResult && playerColor && (
             <button
               onClick={() => resetGame()}
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

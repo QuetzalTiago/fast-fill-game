@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Fast fill game!",
+  title: "Fast Fill",
   description: "By Tiago Romero",
 };
 

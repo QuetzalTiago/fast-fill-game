@@ -6,7 +6,7 @@ const SERVER_URL =
 
 const useSocketBoard = () => {
   const [board, setBoard] = useState<string[][]>([]);
-  const [color, setColor] = useState<string | null>(null);
+  const [playerColor, setPlayerColor] = useState<string | null>(null);
   const [timer, setTimer] = useState<number>(0);
   const [gameResult, setGameResult] = useState<string | null>(null);
 
@@ -20,7 +20,7 @@ const useSocketBoard = () => {
     });
 
     socketRef.current.on("assignedColor", (assignedColor: string) => {
-      setColor(assignedColor);
+      setPlayerColor(assignedColor);
     });
 
     socketRef.current.on("boardUpdate", (updatedBoard: string[][]) => {
@@ -54,7 +54,7 @@ const useSocketBoard = () => {
 
   return {
     board,
-    color,
+    playerColor,
     updateBoard,
     timer,
     resetGame,
