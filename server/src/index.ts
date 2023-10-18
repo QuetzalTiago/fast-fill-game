@@ -6,6 +6,7 @@ import {
   checkGameResult,
   getWinnerOnDisconnect,
   resetGameState,
+  initialGameState,
 } from "./utils/game";
 
 const app = express();
@@ -17,22 +18,6 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-
-interface GameState {
-  board: string[][];
-  timer: number;
-  players: Map<string, string>;
-  result: string | null;
-}
-
-const getEmptyBoard = () => Array.from({ length: 4 }, () => Array(4).fill(""));
-
-const initialGameState: GameState = {
-  board: getEmptyBoard(),
-  timer: 0,
-  players: new Map(),
-  result: null,
-};
 
 let gameState = initialGameState;
 
@@ -126,13 +111,11 @@ io.on("connection", (socket) => {
           io.emit("gameResult", winnerColor);
         }
       }
-
-      gameState.players.delete(socket.id);
     }
-
-    clearInterval(timerInterval);
+    gameState.players.delete(socket.id);
 
     if (gameState.players.size === 0) {
+      clearInterval(timerInterval);
       gameState = resetGameState(gameState);
     }
   });
