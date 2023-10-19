@@ -15,10 +15,6 @@ const useSocketBoard = () => {
   useEffect(() => {
     socketRef.current = io(SERVER_URL);
 
-    socketRef.current.on("currentBoard", (receivedBoard: string[][]) => {
-      setBoard(receivedBoard);
-    });
-
     socketRef.current.on("assignedColor", (assignedColor: string) => {
       setPlayerColor(assignedColor);
     });
@@ -46,11 +42,13 @@ const useSocketBoard = () => {
     }
   }, []);
 
-  const resetGame = () => {
+  const resetGame = useCallback(() => {
+    setGameResult(null);
+
     if (socketRef.current) {
       socketRef.current.emit("resetGame");
     }
-  };
+  }, []);
 
   return {
     board,

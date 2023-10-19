@@ -19,12 +19,21 @@ const Game: React.FC<Props> = () => {
 
   return (
     <div className="flex flex-col items-center mt-10">
-      {timer ? (
+      {board && (
         <>
+          {!timer && (
+            <div className="text-red-500 mb-4">Waiting for another player!</div>
+          )}
+          {!playerColor && (
+            <div className="text-red-500 mb-4">
+              Game is already in progress! Try again later.
+            </div>
+          )}
           <Board
             board={board}
             result={gameResult}
             onUpdateBoard={updateBoard}
+            isActive={timer ? true : false}
           />
           <Timer elapsedTime={timer} />
           <Score board={board} playerColor={playerColor} />
@@ -58,8 +67,6 @@ const Game: React.FC<Props> = () => {
             </button>
           )}
         </>
-      ) : (
-        <h1>Waiting on another player</h1>
       )}
     </div>
   );

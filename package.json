@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  },
+  "scripts": {
+    "postinstall": "npm run install-deps",
+    "install-deps": "cd server && npm install && cd ../client && npm install",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev"
+  }
+}

@@ -4,11 +4,12 @@ interface Props {
   board: string[][];
   result: string | null;
   onUpdateBoard: (rowIndex: number, colIndex: number) => void;
+  isActive: boolean;
 }
 
-const Board: React.FC<Props> = ({ board, result, onUpdateBoard }) => {
+const Board: React.FC<Props> = ({ board, result, isActive, onUpdateBoard }) => {
   const handleCellClick = (rowIndex: number, colIndex: number) => {
-    if (board[rowIndex][colIndex] || result) {
+    if (!isActive || board[rowIndex][colIndex] || result) {
       return;
     }
     onUpdateBoard(rowIndex, colIndex);
