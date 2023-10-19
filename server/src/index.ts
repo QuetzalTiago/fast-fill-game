@@ -106,8 +106,6 @@ const handleStartGame = (socket: Socket) => {
 
     if (gameState.players.size === 2 && !gameState.result) {
       startGameInterval();
-    } else {
-      sendInfo("Waiting for another player...", socket);
     }
   }
 };
