@@ -23,7 +23,7 @@ const io = new Server(server, {
 });
 
 const MAX_PLAYERS = 2;
-const MAX_IDLE_TIME = 5 * 60 * 1000; // 5 minutes
+const MAX_IDLE_TIME = 2 * 60 * 1000; // 2 minutes
 const IDLE_CHECK_INTERVAL = 60 * 1000; // 1 minute
 const PORT = process.env.PORT || 3001;
 
@@ -70,6 +70,7 @@ const handleNewConnection = (socket: Socket) => {
   if (gameState.players.size < MAX_PLAYERS) {
     handleStartGame(socket);
   }
+
   socket.on("squareClicked", (row, col) => {
     try {
       handleSquareClicked(socket, row, col);

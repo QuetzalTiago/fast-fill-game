@@ -2,13 +2,13 @@ import Cell from "./Cell";
 
 interface Props {
   board: string[][];
-  result: string | null;
+  gameResult: string | null;
   onUpdateBoard: (rowIndex: number, colIndex: number) => void;
 }
 
-const Board: React.FC<Props> = ({ board, result, onUpdateBoard }) => {
+const Board: React.FC<Props> = ({ board, gameResult, onUpdateBoard }) => {
   const handleCellClick = (rowIndex: number, colIndex: number) => {
-    if (board[rowIndex][colIndex] || result) {
+    if (board[rowIndex][colIndex] || gameResult) {
       return;
     }
     onUpdateBoard(rowIndex, colIndex);

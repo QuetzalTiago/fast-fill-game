@@ -23,7 +23,7 @@ const Game: React.FC<Props> = () => {
         <>
           <Board
             board={board}
-            result={gameResult}
+            gameResult={gameResult}
             onUpdateBoard={updateBoard}
           />
           <Timer elapsedTime={timer} />
