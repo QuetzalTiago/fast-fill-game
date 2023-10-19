@@ -24,7 +24,7 @@ const Game: React.FC<Props> = () => {
           {!timer && (
             <div className="text-red-500 mb-4">Waiting for another player!</div>
           )}
-          {timer && !playerColor && (
+          {timer !== 0 && !playerColor && (
             <div className="text-red-500 mb-4">
               Game is already in progress! Try again later.
             </div>
